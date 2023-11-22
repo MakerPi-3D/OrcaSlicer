@@ -267,7 +267,7 @@ void GLGizmoFdmSupports::on_render_input_window(float x, float y, float bottom_l
     const float sliders_width = m_imgui->scaled(7.0f);
     const float drag_left_width = ImGui::GetStyle().WindowPadding.x + sliders_left_width + sliders_width - space_size;
 
-    float drag_pos_times     = 0.7;
+    float drag_pos_times     = 0.7f;
 
     ImGui::AlignTextToFramePadding();
     m_imgui->text(m_desc.at("tool_type"));

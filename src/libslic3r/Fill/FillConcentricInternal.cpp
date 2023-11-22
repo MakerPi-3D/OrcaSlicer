@@ -29,7 +29,7 @@ void FillConcentricInternal::fill_surface_extrusion(const Surface* surface, cons
         Arachne::WallToolPathsParams input_params;
         input_params.min_bead_width = 0.85 * min_nozzle_diameter;
         input_params.min_feature_size = 0.25 * min_nozzle_diameter;
-        input_params.wall_transition_length = 0.4;
+        input_params.wall_transition_length = 0.4f;
         input_params.wall_transition_angle = 10;
         input_params.wall_transition_filter_deviation = 0.25 * min_nozzle_diameter;
         input_params.wall_distribution_count = 1;

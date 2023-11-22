@@ -1883,7 +1883,7 @@ void GCode::_do_export(Print& print, GCodeOutputStream &file, ThumbnailsGenerato
 
         calib_pressure_advance pa_test(this);
         double filament_max_volumetric_speed = m_config.option<ConfigOptionFloats>("filament_max_volumetric_speed")->get_at(initial_extruder_id);
-        Flow pattern_line = Flow(pa_test.line_width(), 0.2, m_config.nozzle_diameter.get_at(0));
+        Flow pattern_line = Flow(pa_test.line_width(), 0.2f, m_config.nozzle_diameter.get_at(0));
         auto fast_speed = std::min(print.default_region_config().outer_wall_speed.value, filament_max_volumetric_speed / pattern_line.mm3_per_mm());
         auto slow_speed = std::max(20.0, fast_speed / 10.0);
         pa_test.set_speed(fast_speed, slow_speed);
@@ -4417,7 +4417,7 @@ bool GCode::needs_retraction(const Polyline &travel, ExtrusionRole role, LiftTyp
     }
 
     auto is_through_overhang = [this](const Polyline& travel) {
-        const float protect_z_scaled = scale_(0.4);
+        const float protect_z_scaled = scale_(0.4f);
         std::pair<float, float> z_range;
         z_range.second = m_layer ? m_layer->print_z : 0.f;
         z_range.first = std::max(0.f, z_range.second - protect_z_scaled);

@@ -75,7 +75,7 @@ struct PlateBBoxData
     std::vector<std::string> filament_colors;
     bool is_seq_print = false;
     int first_extruder = 0;
-    float nozzle_diameter = 0.4;
+    float nozzle_diameter = 0.4f;
     std::string bed_type;
     // version 1: use view type ColorPrint (filament color)
     // version 2: use view type FilamentId (filament id)

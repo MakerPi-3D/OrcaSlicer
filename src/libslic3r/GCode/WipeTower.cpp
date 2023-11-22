@@ -299,7 +299,7 @@ public:
             if (need_change_flow) { 
                 if (i == 1) {
                     // using bridge flow in bridge area, and add notes for gcode-check when flow changed
-                    set_extrusion_flow(wipe_tower->extrusion_flow(0.2));
+                    set_extrusion_flow(wipe_tower->extrusion_flow(0.2f));
                     append(";" + GCodeProcessor::reserved_tag(GCodeProcessor::ETags::Height) + std::to_string(0.2) + "\n");
                     flow_changed = true;
                 } else if (i == 2 && flow_changed) {
@@ -1097,7 +1097,7 @@ void WipeTower::toolchange_Wipe(
 
         // BBS: check the bridging area and use the bridge flow
         if (need_change_flow || need_thick_bridge_flow(writer.y())) {
-            writer.set_extrusion_flow(extrusion_flow(0.2));
+            writer.set_extrusion_flow(extrusion_flow(0.2f));
             writer.append(";" + GCodeProcessor::reserved_tag(GCodeProcessor::ETags::Height) + std::to_string(0.2) + "\n");
             need_change_flow = true;
         }
@@ -1722,7 +1722,7 @@ bool WipeTower::get_floating_area(float &start_pos_y, float &end_pos_y) const {
 }
 
 bool WipeTower::need_thick_bridge_flow(float pos_y) const {
-    if (m_extrusion_flow >= extrusion_flow(0.2))
+    if (m_extrusion_flow >= extrusion_flow(0.2f))
         return false;
 
     float y_min = 0., y_max = 0.;
