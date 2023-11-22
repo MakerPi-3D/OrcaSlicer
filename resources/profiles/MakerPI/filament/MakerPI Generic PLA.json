@@ -1,0 +1,33 @@
+{
+    "type": "filament",
+    "filament_id": "GFL99",
+    "setting_id": "GFSA04",
+    "name": "MakerPI Generic PLA",
+    "from": "system",
+    "instantiation": "true",
+    "inherits": "fdm_filament_pla",
+    "filament_flow_ratio": [
+        "0.98"
+    ],
+    "filament_max_volumetric_speed": [
+        "15"
+    ],
+    "slow_down_layer_time": [
+        "8"
+    ],
+    "compatible_printers": [
+  	  	"MakerPI F400TP 0.4 nozzle (IDEX)"
+    ],
+    "close_fan_the_first_x_layers": [
+        "0"
+    ],
+    "hot_plate_temp": [
+        "60"
+    ],
+    "hot_plate_temp_initial_layer": [
+        "60"
+    ],
+    "slow_down_for_layer_cooling": [
+        "0"
+    ]
+}
