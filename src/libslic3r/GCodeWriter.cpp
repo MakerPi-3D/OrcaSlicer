@@ -904,9 +904,9 @@ void GCodeFormatter::emit_axis(const char axis, const double v, size_t digits) {
     this->ptr_err = std::to_chars(this->ptr_err.ptr, this->buf_end - 1, v_int);
 #endif
     size_t writen_digits = (this->ptr_err.ptr - base_ptr) - (v_int < 0 ? 1 : 0);
-    if (writen_digits < digits) {
+    if (writen_digits <= digits) {
         // Number is smaller than 10^digits, so that we will pad it with zeros.
-        size_t remaining_digits = digits - writen_digits;
+        size_t remaining_digits = digits - writen_digits + 1;
         // Move all newly inserted chars by remaining_digits to allocate space for padding with zeros.
         for (char *from_ptr = this->ptr_err.ptr - 1, *to_ptr = from_ptr + remaining_digits; from_ptr >= this->ptr_err.ptr - writen_digits; --to_ptr, --from_ptr)
             *to_ptr = *from_ptr;
@@ -919,7 +919,14 @@ void GCodeFormatter::emit_axis(const char axis, const double v, size_t digits) {
     for (char *to_ptr = this->ptr_err.ptr, *from_ptr = to_ptr - 1; from_ptr >= this->ptr_err.ptr - digits; --to_ptr, --from_ptr)
         *to_ptr = *from_ptr;
 
-    *(this->ptr_err.ptr - digits) = '.';
+    if (writen_digits <= digits)
+    {
+        *(this->ptr_err.ptr - digits - 1) = '0';
+        *(this->ptr_err.ptr - digits) = '.';
+    } else
+    {
+        *(this->ptr_err.ptr - digits) = '.';
+    }
     for (size_t i = 0; i < digits; ++i) {
         if (*this->ptr_err.ptr != '0')
             break;
