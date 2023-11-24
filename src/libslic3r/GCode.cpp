@@ -1016,7 +1016,7 @@ static std::vector<Vec2d> get_path_of_change_filament(const Print& print)
         std::string gcode;
         if (!gcodegen.is_BBL_Printer()) {
             if (std::abs(gcodegen.writer().get_position().z() - m_final_purge.print_z) > EPSILON)
-                gcode += gcodegen.change_layer(m_final_purge.print_z);
+                gcode += gcodegen.change_layer(m_final_purge.print_z, 0.0);
             gcode += append_tcr2(gcodegen, m_final_purge, -1);
         }
 
@@ -1319,6 +1319,7 @@ namespace DoExport {
     {
         const GCodeProcessorResult& result = processor.get_result();
         double normal_print_time = result.print_statistics.modes[static_cast<size_t>(PrintEstimatedStatistics::ETimeMode::Normal)].time;
+        print_statistics.normal_print_time = normal_print_time;
         print_statistics.estimated_normal_print_time = get_time_dhms(normal_print_time);
         print_statistics.estimated_silent_print_time = processor.is_stealth_time_estimator_enabled() ?
             get_time_dhms(result.print_statistics.modes[static_cast<size_t>(PrintEstimatedStatistics::ETimeMode::Stealth)].time) : "N/A";
@@ -1486,11 +1487,41 @@ void GCode::do_export(Print* print, const char* path, GCodeProcessorResult* resu
         BOOST_LOG_TRIVIAL(error) << "[WARNING]: the parent path " + folder.string() +" is not there, create it!" << std::endl;
     }
 
+    std::string path_tmp_r(path);
+    path_tmp_r += ".tmp_r";
+
+    m_processor.initialize(path_tmp_r);
+    GCodeOutputStream file_r(boost::nowide::fopen(path_tmp_r.c_str(), "rb"), m_processor);
+    file_r.set_file_not_opera(true);
+
+    try {
+        this->_do_export(*print, file_r, thumbnail_cb);
+    } catch (std::exception & /* ex */) {
+        // Rethrow on any exception. std::runtime_exception and CanceledException are expected to be thrown.
+        // Close and remove the file.
+        boost::nowide::remove(path_tmp_r.c_str());
+        throw;
+    }
+    m_timelapse_warning_code = 0;
+    if (m_config.printer_structure.value == PrinterStructure::psI3 && m_spiral_vase) {
+        m_timelapse_warning_code += 1;
+    }
+    if (m_config.printer_structure.value == PrinterStructure::psI3 && print->config().print_sequence == PrintSequence::ByObject) {
+        m_timelapse_warning_code += (1 << 1);
+    }
+    m_processor.result().timelapse_warning_code = m_timelapse_warning_code;
+    m_processor.result().support_traditional_timelapse = m_support_traditional_timelapse;
+    m_processor.finalize(false);
+
+    DoExport::update_print_estimated_stats(m_processor, m_writer.extruders(), print->m_print_statistics, print->config());
+
     std::string path_tmp(path);
     path_tmp += ".tmp";
 
     m_processor.initialize(path_tmp);
     GCodeOutputStream file(boost::nowide::fopen(path_tmp.c_str(), "wb"), m_processor);
+
+    file.set_file_not_opera(false);
     if (! file.is_open()) {
         BOOST_LOG_TRIVIAL(error) << std::string("G-code export to ") + path + " failed.\nCannot open the file for writing.\n" << std::endl;
         if (!fs::exists(folder)) {
@@ -3415,7 +3446,7 @@ LayerResult GCode::process_layer(
     };
 
     // BBS: don't use lazy_raise when enable spiral vase
-    gcode += this->change_layer(print_z);  // this will increase m_layer_index
+    gcode += this->change_layer(print_z, print.m_print_statistics.normal_print_time);  // this will increase m_layer_index
     m_layer = &layer;
     m_object_layer_over_raft = false;
     if(is_BBL_Printer()){
@@ -4119,9 +4150,10 @@ std::string GCode::preamble()
 }
 
 // called by GCode::process_layer()
-std::string GCode::change_layer(coordf_t print_z)
+std::string GCode::change_layer(coordf_t print_z, double print_time)
 {
     std::string gcode;
+    if(print_time > 3600) gcode = "\nLOG_Z\n\n";
     if (m_layer_count > 0)
         // Increment a progress bar indicator.
         gcode += m_writer.update_progress(++ m_layer_index, m_layer_count);
@@ -4430,12 +4462,13 @@ bool GCode::GCodeOutputStream::is_error() const
 
 void GCode::GCodeOutputStream::flush()
 {
-    ::fflush(this->f);
+    if(!is_file_not_opera)
+        ::fflush(this->f);
 }
 
 void GCode::GCodeOutputStream::close()
 {
-    if (this->f) {
+    if (!is_file_not_opera && this->f) {
         ::fclose(this->f);
         this->f = nullptr;
     }
@@ -4446,7 +4479,8 @@ void GCode::GCodeOutputStream::write(const char *what)
     if (what != nullptr) {
         const char* gcode = what;
         // writes string to file
-        fwrite(gcode, 1, ::strlen(gcode), this->f);
+        if(!is_file_not_opera)
+            fwrite(gcode, 1, ::strlen(gcode), this->f);
         //FIXME don't allocate a string, maybe process a batch of lines?
         m_processor.process_buffer(std::string(gcode));
     }

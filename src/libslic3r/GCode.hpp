@@ -290,9 +290,12 @@ private:
         // Formats and write into a file the given data.
         void write_format(const char* format, ...);
 
+        void set_file_not_opera(bool value) {is_file_not_opera = value;}
+
     private:
         FILE *f = nullptr;
         GCodeProcessor &m_processor;
+        bool is_file_not_opera = false;
     };
     void            _do_export(Print &print, GCodeOutputStream &file, ThumbnailsGeneratorCallback thumbnail_cb);
 
@@ -341,7 +344,7 @@ private:
     void            set_extruders(const std::vector<unsigned int> &extruder_ids);
     std::string     preamble();
     // BBS
-    std::string     change_layer(coordf_t print_z);
+    std::string     change_layer(coordf_t print_z, double print_time);
     std::string     extrude_entity(const ExtrusionEntity &entity, std::string description = "", double speed = -1.);
     std::string     extrude_loop(ExtrusionLoop loop, std::string description, double speed = -1.);
     std::string     extrude_multi_path(ExtrusionMultiPath multipath, std::string description = "", double speed = -1.);
