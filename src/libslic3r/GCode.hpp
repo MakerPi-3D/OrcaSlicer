@@ -344,7 +344,7 @@ private:
     void            set_extruders(const std::vector<unsigned int> &extruder_ids);
     std::string     preamble();
     // BBS
-    std::string     change_layer(coordf_t print_z, double print_time);
+    std::string     change_layer(coordf_t print_z);
     std::string     extrude_entity(const ExtrusionEntity &entity, std::string description = "", double speed = -1.);
     std::string     extrude_loop(ExtrusionLoop loop, std::string description, double speed = -1.);
     std::string     extrude_multi_path(ExtrusionMultiPath multipath, std::string description = "", double speed = -1.);
@@ -551,6 +551,7 @@ private:
     coordf_t m_nominal_z;
     bool m_need_change_layer_lift_z = false;
     int m_start_gcode_filament = -1;
+    double _normal_print_time;
 
     // BBS
     int get_bed_temperature(const int extruder_id, const bool is_first_layer, const BedType bed_type) const;

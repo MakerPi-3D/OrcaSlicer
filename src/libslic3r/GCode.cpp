@@ -1016,7 +1016,7 @@ static std::vector<Vec2d> get_path_of_change_filament(const Print& print)
         std::string gcode;
         if (!gcodegen.is_BBL_Printer()) {
             if (std::abs(gcodegen.writer().get_position().z() - m_final_purge.print_z) > EPSILON)
-                gcode += gcodegen.change_layer(m_final_purge.print_z, 0.0);
+                gcode += gcodegen.change_layer(m_final_purge.print_z);
             gcode += append_tcr2(gcodegen, m_final_purge, -1);
         }
 
@@ -1315,11 +1315,11 @@ namespace DoExport {
 //            get_time_dhms(result.print_statistics.modes[static_cast<size_t>(PrintEstimatedStatistics::ETimeMode::Stealth)].time) : "N/A";
 //    }
 
-    static void update_print_estimated_stats(const GCodeProcessor& processor, const std::vector<Extruder>& extruders, PrintStatistics& print_statistics, const PrintConfig& config)
+    static void update_print_estimated_stats(const GCodeProcessor& processor, const std::vector<Extruder>& extruders, PrintStatistics& print_statistics, const PrintConfig& config, double & _normal_print_time)
     {
         const GCodeProcessorResult& result = processor.get_result();
         double normal_print_time = result.print_statistics.modes[static_cast<size_t>(PrintEstimatedStatistics::ETimeMode::Normal)].time;
-        print_statistics.normal_print_time = normal_print_time;
+        _normal_print_time = normal_print_time;
         print_statistics.estimated_normal_print_time = get_time_dhms(normal_print_time);
         print_statistics.estimated_silent_print_time = processor.is_stealth_time_estimator_enabled() ?
             get_time_dhms(result.print_statistics.modes[static_cast<size_t>(PrintEstimatedStatistics::ETimeMode::Stealth)].time) : "N/A";
@@ -1513,7 +1513,7 @@ void GCode::do_export(Print* print, const char* path, GCodeProcessorResult* resu
     m_processor.result().support_traditional_timelapse = m_support_traditional_timelapse;
     m_processor.finalize(false);
 
-    DoExport::update_print_estimated_stats(m_processor, m_writer.extruders(), print->m_print_statistics, print->config());
+    DoExport::update_print_estimated_stats(m_processor, m_writer.extruders(), print->m_print_statistics, print->config(), _normal_print_time);
 
     std::string path_tmp(path);
     path_tmp += ".tmp";
@@ -1564,7 +1564,7 @@ void GCode::do_export(Print* print, const char* path, GCodeProcessorResult* resu
     m_processor.result().support_traditional_timelapse = m_support_traditional_timelapse;
     m_processor.finalize(true);
 //    DoExport::update_print_estimated_times_stats(m_processor, print->m_print_statistics);
-    DoExport::update_print_estimated_stats(m_processor, m_writer.extruders(), print->m_print_statistics, print->config());
+    DoExport::update_print_estimated_stats(m_processor, m_writer.extruders(), print->m_print_statistics, print->config(), _normal_print_time);
     if (result != nullptr) {
         *result = std::move(m_processor.extract_result());
         // set the filename to the correct value
@@ -3446,7 +3446,7 @@ LayerResult GCode::process_layer(
     };
 
     // BBS: don't use lazy_raise when enable spiral vase
-    gcode += this->change_layer(print_z, print.m_print_statistics.normal_print_time);  // this will increase m_layer_index
+    gcode += this->change_layer(print_z);  // this will increase m_layer_index
     m_layer = &layer;
     m_object_layer_over_raft = false;
     if(is_BBL_Printer()){
@@ -4150,10 +4150,10 @@ std::string GCode::preamble()
 }
 
 // called by GCode::process_layer()
-std::string GCode::change_layer(coordf_t print_z, double print_time)
+std::string GCode::change_layer(coordf_t print_z)
 {
     std::string gcode;
-    if(print_time > 3600) gcode = "\nLOG_Z\n\n";
+
     if (m_layer_count > 0)
         // Increment a progress bar indicator.
         gcode += m_writer.update_progress(++ m_layer_index, m_layer_count);
@@ -4549,6 +4549,7 @@ std::string GCode::_extrude(const ExtrusionPath &path, std::string description, 
             path.role(),
             "move to first " + description + " point"
         );
+        if(m_need_change_layer_lift_z && _normal_print_time > 3600) gcode += "\nLOG_Z\n\n";
         m_need_change_layer_lift_z = false;
     }
 
