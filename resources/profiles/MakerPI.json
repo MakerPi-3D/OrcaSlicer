@@ -10,6 +10,10 @@
             "sub_path": "machine/MakerPI K5.json"
         },
         {
+            "name": "MakerPI P2 Pro",
+            "sub_path": "machine/MakerPI P2 Pro.json"
+        },
+        {
             "name": "MakerPI F400TP",
             "sub_path": "machine/MakerPI F400TP.json"
         }
@@ -42,6 +46,18 @@
         {
             "name": "0.25mm Draft @MakerPI K5",
             "sub_path": "process/0.25mm Draft @MakerPI K5.json"
+        },
+        {
+            "name": "0.10mm Fine @MakerPI P2 Pro",
+            "sub_path": "process/0.10mm Fine @MakerPI P2 Pro.json"
+        },
+        {
+            "name": "0.20mm Standard @MakerPI P2 Pro",
+            "sub_path": "process/0.20mm Standard @MakerPI P2 Pro.json"
+        },
+        {
+            "name": "0.25mm Draft @MakerPI P2 Pro",
+            "sub_path": "process/0.25mm Draft @MakerPI P2 Pro.json"
         }
     ],
     "filament_list": [
@@ -102,6 +118,10 @@
         {
             "name": "MakerPI K5 0.4 nozzle",
             "sub_path": "machine/MakerPI K5 0.4 nozzle.json"
+        },
+        {
+            "name": "MakerPI P2 Pro 0.4 nozzle",
+            "sub_path": "machine/MakerPI P2 Pro 0.4 nozzle.json"
         }
     ]
 }

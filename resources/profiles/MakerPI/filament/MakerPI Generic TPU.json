@@ -11,6 +11,7 @@
     ],
     "compatible_printers": [
         "MakerPI F400TP 0.4 nozzle (IDEX)",
-        "MakerPI K5 0.4 nozzle"
+        "MakerPI K5 0.4 nozzle",
+        "MakerPI P2 Pro 0.4 nozzle"
     ]
 }
