@@ -19,12 +19,12 @@
 		"0x0",
 		"0x0"
 	],
-	"printable_area": [
-		"0x0",
-		"200x0",
-		"200x200",
-		"0x200"
-	],
+    "printable_area": [
+        "0x0",
+        "250x0",
+        "250x250",
+        "0x250"
+    ],
 	"printable_height": "250",
 	"nozzle_type": "hardened_steel",
 	"auxiliary_fan": "0",

@@ -14,6 +14,14 @@
             "sub_path": "machine/MakerPI P2 Pro.json"
         },
         {
+            "name": "MakerPI K400",
+            "sub_path": "machine/MakerPI K400.json"
+        },
+        {
+            "name": "MakerPI K600",
+            "sub_path": "machine/MakerPI K600.json"
+        },
+        {
             "name": "MakerPI F400TP",
             "sub_path": "machine/MakerPI F400TP.json"
         }
@@ -58,6 +66,30 @@
         {
             "name": "0.25mm Draft @MakerPI P2 Pro",
             "sub_path": "process/0.25mm Draft @MakerPI P2 Pro.json"
+        },
+        {
+            "name": "0.10mm Fine @MakerPI K400",
+            "sub_path": "process/0.10mm Fine @MakerPI K400.json"
+        },
+        {
+            "name": "0.20mm Standard @MakerPI K400",
+            "sub_path": "process/0.20mm Standard @MakerPI K400.json"
+        },
+        {
+            "name": "0.25mm Draft @MakerPI K400",
+            "sub_path": "process/0.25mm Draft @MakerPI K400.json"
+        },
+        {
+            "name": "0.10mm Fine @MakerPI K600",
+            "sub_path": "process/0.10mm Fine @MakerPI K600.json"
+        },
+        {
+            "name": "0.20mm Standard @MakerPI K600",
+            "sub_path": "process/0.20mm Standard @MakerPI K600.json"
+        },
+        {
+            "name": "0.25mm Draft @MakerPI K600",
+            "sub_path": "process/0.25mm Draft @MakerPI K600.json"
         }
     ],
     "filament_list": [
@@ -122,6 +154,14 @@
         {
             "name": "MakerPI P2 Pro 0.4 nozzle",
             "sub_path": "machine/MakerPI P2 Pro 0.4 nozzle.json"
+        },
+        {
+            "name": "MakerPI K400 0.4 nozzle",
+            "sub_path": "machine/MakerPI K400 0.4 nozzle.json"
+        },
+        {
+            "name": "MakerPI K600 0.4 nozzle",
+            "sub_path": "machine/MakerPI K600 0.4 nozzle.json"
         }
     ]
 }

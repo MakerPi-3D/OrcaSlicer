@@ -1,12 +1,12 @@
 {
 	"type": "machine",
 	"setting_id": "GM001",
-	"name": "MakerPI K5 0.4 nozzle",
+	"name": "MakerPI K400 0.4 nozzle",
 	"from": "system",
 	"instantiation": "true",
 	"inherits": "fdm_machine_common",
-	"printer_model": "MakerPI K5",
-	"default_print_profile": "0.20mm Standard @MakerPI K5",
+	"printer_model": "MakerPI K400",
+	"default_print_profile": "0.20mm Standard @MakerPI K400",
 	"nozzle_diameter": [
 		"0.4",
 		"0.4"
@@ -19,13 +19,13 @@
 		"0x0",
 		"0x0"
 	],
-	"printable_area": [
-		"0x0",
-		"200x0",
-		"200x200",
-		"0x200"
-	],
-	"printable_height": "200",
+    "printable_area": [
+        "0x0",
+        "400x0",
+        "400x400",
+        "0x400"
+    ],
+    "printable_height": "400",
 	"nozzle_type": "hardened_steel",
 	"auxiliary_fan": "0",
 	"machine_max_acceleration_e": [
