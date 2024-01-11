@@ -6,6 +6,10 @@
     "description": "MakerPI configurations",
     "machine_model_list": [
         {
+            "name": "MakerPI K5",
+            "sub_path": "machine/MakerPI K5.json"
+        },
+        {
             "name": "MakerPI F400TP",
             "sub_path": "machine/MakerPI F400TP.json"
         }
@@ -26,6 +30,18 @@
         {
             "name": "0.25mm Draft @MakerPI F400TP",
             "sub_path": "process/0.25mm Draft @MakerPI F400TP.json"
+        },
+        {
+            "name": "0.10mm Fine @MakerPI K5",
+            "sub_path": "process/0.10mm Fine @MakerPI K5.json"
+        },
+        {
+            "name": "0.20mm Standard @MakerPI K5",
+            "sub_path": "process/0.20mm Standard @MakerPI K5.json"
+        },
+        {
+            "name": "0.25mm Draft @MakerPI K5",
+            "sub_path": "process/0.25mm Draft @MakerPI K5.json"
         }
     ],
     "filament_list": [
@@ -82,6 +98,10 @@
         {
             "name": "MakerPI F400TP 0.4 nozzle (IDEX)",
             "sub_path": "machine/MakerPI F400TP 0.4 nozzle (IDEX).json"
+        },
+        {
+            "name": "MakerPI K5 0.4 nozzle",
+            "sub_path": "machine/MakerPI K5 0.4 nozzle.json"
         }
     ]
 }

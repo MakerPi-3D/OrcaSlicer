@@ -43,6 +43,7 @@
         "; filament start gcode\n"
     ],
     "compatible_printers": [
-  	  	"MakerPI F400TP 0.4 nozzle (IDEX)"
+        "MakerPI F400TP 0.4 nozzle (IDEX)",
+        "MakerPI K5 0.4 nozzle"
     ]
 }
