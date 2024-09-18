@@ -1,0 +1,12 @@
+{
+    "type": "machine_model",
+    "name": "MakerPI K600",
+    "model_id": "MakerPI-K600",
+    "nozzle_diameter": "0.4",
+    "machine_tech": "FFF",
+    "family": "MakerPI",
+    "bed_model": "MakerPI_K600_buildplate_model.stl",
+    "bed_texture": "MakerPI_K600_buildplate_texture.png",
+    "hotend_model": "",
+	"default_materials": "MakerPI Generic ASA;MakerPI Generic PETG;MakerPI Generic PLA;MakerPI Generic PVA;MakerPI Generic TPU"
+}

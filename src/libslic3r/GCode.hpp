@@ -299,9 +299,12 @@ private:
         // Formats and write into a file the given data.
         void write_format(const char* format, ...);
 
+        void set_file_not_opera(bool value) {is_file_not_opera = value;}
+
     private:
         FILE *f = nullptr;
         GCodeProcessor &m_processor;
+        bool is_file_not_opera = false;
     };
     void            _do_export(Print &print, GCodeOutputStream &file, ThumbnailsGeneratorCallback thumbnail_cb);
 
@@ -594,6 +597,7 @@ private:
     coordf_t m_nominal_z;
     bool m_need_change_layer_lift_z = false;
     int m_start_gcode_filament = -1;
+    double _normal_print_time;
 
     std::set<unsigned int>                  m_initial_layer_extruders;
     // BBS

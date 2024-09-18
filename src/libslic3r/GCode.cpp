@@ -1326,10 +1326,11 @@ namespace DoExport {
 //            get_time_dhms(result.print_statistics.modes[static_cast<size_t>(PrintEstimatedStatistics::ETimeMode::Stealth)].time) : "N/A";
 //    }
 
-    static void update_print_estimated_stats(const GCodeProcessor& processor, const std::vector<Extruder>& extruders, PrintStatistics& print_statistics, const PrintConfig& config)
+    static void update_print_estimated_stats(const GCodeProcessor& processor, const std::vector<Extruder>& extruders, PrintStatistics& print_statistics, const PrintConfig& config, double & _normal_print_time)
     {
         const GCodeProcessorResult& result = processor.get_result();
         double normal_print_time = result.print_statistics.modes[static_cast<size_t>(PrintEstimatedStatistics::ETimeMode::Normal)].time;
+        _normal_print_time = normal_print_time;
         print_statistics.estimated_normal_print_time = get_time_dhms(normal_print_time);
         print_statistics.estimated_silent_print_time = processor.is_stealth_time_estimator_enabled() ?
             get_time_dhms(result.print_statistics.modes[static_cast<size_t>(PrintEstimatedStatistics::ETimeMode::Stealth)].time) : "N/A";
@@ -1482,12 +1483,42 @@ void GCode::do_export(Print* print, const char* path, GCodeProcessorResult* resu
         BOOST_LOG_TRIVIAL(error) << "[WARNING]: the parent path " + folder.string() +" is not there, create it!" << std::endl;
     }
 
+    std::string path_tmp_r(path);
+    path_tmp_r += ".tmp_r";
+
+    m_processor.initialize(path_tmp_r);
+    GCodeOutputStream file_r(boost::nowide::fopen(path_tmp_r.c_str(), "rb"), m_processor);
+    file_r.set_file_not_opera(true);
+
+    try {
+        this->_do_export(*print, file_r, thumbnail_cb);
+    } catch (std::exception & /* ex */) {
+        // Rethrow on any exception. std::runtime_exception and CanceledException are expected to be thrown.
+        // Close and remove the file.
+        boost::nowide::remove(path_tmp_r.c_str());
+        throw;
+    }
+    m_timelapse_warning_code = 0;
+    if (m_config.printer_structure.value == PrinterStructure::psI3 && m_spiral_vase) {
+        m_timelapse_warning_code += 1;
+    }
+    if (m_config.printer_structure.value == PrinterStructure::psI3 && print->config().print_sequence == PrintSequence::ByObject) {
+        m_timelapse_warning_code += (1 << 1);
+    }
+    m_processor.result().timelapse_warning_code = m_timelapse_warning_code;
+    m_processor.result().support_traditional_timelapse = m_support_traditional_timelapse;
+    m_processor.finalize(false);
+
+    DoExport::update_print_estimated_stats(m_processor, m_writer.extruders(), print->m_print_statistics, print->config(), _normal_print_time);
+
     std::string path_tmp(path);
     path_tmp += ".tmp";
 
     m_processor.initialize(path_tmp);
     m_processor.set_print(print);
     GCodeOutputStream file(boost::nowide::fopen(path_tmp.c_str(), "wb"), m_processor);
+
+    file.set_file_not_opera(false);
     if (! file.is_open()) {
         BOOST_LOG_TRIVIAL(error) << std::string("G-code export to ") + path + " failed.\nCannot open the file for writing.\n" << std::endl;
         if (!fs::exists(folder)) {
@@ -1575,7 +1606,7 @@ void GCode::do_export(Print* print, const char* path, GCodeProcessorResult* resu
 
     m_processor.finalize(true);
 //    DoExport::update_print_estimated_times_stats(m_processor, print->m_print_statistics);
-    DoExport::update_print_estimated_stats(m_processor, m_writer.extruders(), print->m_print_statistics, print->config());
+    DoExport::update_print_estimated_stats(m_processor, m_writer.extruders(), print->m_print_statistics, print->config(), _normal_print_time);
     if (result != nullptr) {
         *result = std::move(m_processor.extract_result());
         // set the filename to the correct value
@@ -1954,8 +1985,22 @@ void GCode::_do_export(Print& print, GCodeOutputStream &file, ThumbnailsGenerato
         file.writeln(filament_diameter_list);
 
         coordf_t max_height_z = -1;
+        coordf_t max_length_x = -1;
+        coordf_t max_width_y = -1;
         for (const auto& object : print.objects())
+        {
             max_height_z = std::max(object->layers().back()->print_z, max_height_z);
+			max_length_x = std::max((coordf_t)object->size().x(), max_length_x);
+			max_width_y = std::max((coordf_t)object->size().y(), max_width_y);
+        }
+
+        std::ostringstream max_length_x_tip;
+        max_length_x_tip<<"; max_x_length: " << std::fixed << std::setprecision(2) << max_length_x << '\n';
+        file.writeln(max_length_x_tip.str());
+		
+        std::ostringstream max_width_y_tip;
+        max_width_y_tip<<"; max_y_width: " << std::fixed << std::setprecision(2) << max_width_y << '\n';
+        file.writeln(max_width_y_tip.str());
 
         std::ostringstream max_height_z_tip;
         max_height_z_tip<<"; max_z_height: " << std::fixed << std::setprecision(2) << max_height_z << '\n';
@@ -5109,12 +5154,13 @@ bool GCode::GCodeOutputStream::is_error() const
 
 void GCode::GCodeOutputStream::flush()
 {
-    ::fflush(this->f);
+    if(!is_file_not_opera)
+        ::fflush(this->f);
 }
 
 void GCode::GCodeOutputStream::close()
 {
-    if (this->f) {
+    if (!is_file_not_opera && this->f) {
         ::fclose(this->f);
         this->f = nullptr;
     }
@@ -5125,7 +5171,8 @@ void GCode::GCodeOutputStream::write(const char *what)
     if (what != nullptr) {
         const char* gcode = what;
         // writes string to file
-        fwrite(gcode, 1, ::strlen(gcode), this->f);
+        if(!is_file_not_opera)
+            fwrite(gcode, 1, ::strlen(gcode), this->f);
         //FIXME don't allocate a string, maybe process a batch of lines?
         m_processor.process_buffer(std::string(gcode));
     }
@@ -5226,6 +5273,7 @@ std::string GCode::_extrude(const ExtrusionPath &path, std::string description, 
             "move to first " + description + " point",
             sloped == nullptr ? DBL_MAX : get_sloped_z(sloped->slope_begin.z_ratio)
         );
+        if(m_need_change_layer_lift_z && _normal_print_time > 3600) gcode += "\nLOG_Z\n\n";
         m_need_change_layer_lift_z = false;
     }
 
