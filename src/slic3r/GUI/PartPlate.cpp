@@ -5513,6 +5513,7 @@ void PartPlateList::BedTextureInfo::reset()
 
 void PartPlateList::init_bed_type_info()
 {
+	BedTextureInfo::TexturePart main_texture(0, 0,  200, 190, "MakerPI_S6_buildplate_texture.png");
 	BedTextureInfo::TexturePart pc_part1(10, 130,  10, 110, "bbl_bed_pc_left.svg");
 	BedTextureInfo::TexturePart pc_part2(74, -10, 148, 12, "bbl_bed_pc_bottom.svg");
 	BedTextureInfo::TexturePart ep_part1(7.5, 90, 12.5, 150, "bbl_bed_ep_left.svg");
@@ -5525,12 +5526,16 @@ void PartPlateList::init_bed_type_info()
 		bed_texture_info[i].reset();
 		bed_texture_info[i].parts.clear();
 	}
+	bed_texture_info[btPC].parts.push_back(main_texture);
 	bed_texture_info[btPC].parts.push_back(pc_part1);
 	bed_texture_info[btPC].parts.push_back(pc_part2);
+	bed_texture_info[btEP].parts.push_back(main_texture);
 	bed_texture_info[btEP].parts.push_back(ep_part1);
 	bed_texture_info[btEP].parts.push_back(ep_part2);
+	bed_texture_info[btPEI].parts.push_back(main_texture);
 	bed_texture_info[btPEI].parts.push_back(pei_part1);
 	bed_texture_info[btPEI].parts.push_back(pei_part2);
+	bed_texture_info[btPTE].parts.push_back(main_texture);
 	bed_texture_info[btPTE].parts.push_back(pte_part1);
 	bed_texture_info[btPTE].parts.push_back(pte_part2);
 

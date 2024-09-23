@@ -34,8 +34,6 @@
 	"overhang_2_4_speed": "50",
 	"overhang_3_4_speed": "30",
 	"overhang_4_4_speed": "10",
-	"overhang_fan_speed": "100",
-	"overhang_fan_threshold": "50%",
 	"overhang_speed_classic": "0",
 	"only_one_wall_top": "1",
 	"seam_position": "nearest",
@@ -88,7 +86,6 @@
 	"thick_bridges": "0",
 	"max_bridge_length": "10",
 	"internal_bridge_support_thickness": "0.2",
-	"enable_overhang_bridge_fan": "1",
 	"detect_overhang_wall": "0",
 	"sparse_infill_pattern": "alignedrectilinear",
 	"compatible_printers": [
