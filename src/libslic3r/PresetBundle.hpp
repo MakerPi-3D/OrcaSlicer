@@ -24,7 +24,8 @@ enum class VendorType {
     Unknown = 0,
     Klipper,
     Marlin,
-    Marlin_BBL
+    Marlin_BBL,
+    Marlin_SG
 };
 namespace Slic3r {
 

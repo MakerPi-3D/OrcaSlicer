@@ -338,7 +338,7 @@ VendorType PresetBundle::get_current_vendor_type()
     }
     if (!vendor_name.empty())
     {
-        if(vendor_name.compare("BBL") == 0)
+        if(vendor_name.compare("BBL") == 0 || vendor_name.compare("MakerPI") == 0)
             t = VendorType::Marlin_BBL;
     }
     return t;
