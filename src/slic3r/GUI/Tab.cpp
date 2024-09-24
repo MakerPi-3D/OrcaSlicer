@@ -2417,6 +2417,7 @@ void TabPrint::toggle_options()
     if (m_preset_bundle) {
         bool is_BBL_printer = wxGetApp().preset_bundle->is_bbl_vendor();
         m_config_manipulation.set_is_BBL_Printer(is_BBL_printer);
+        m_config_manipulation.set_is_MakerPI_Printer(wxGetApp().preset_bundle->is_makerpi_vendor());
     }
 
     m_config_manipulation.toggle_print_fff_options(m_config, m_type < Preset::TYPE_COUNT);

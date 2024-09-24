@@ -324,7 +324,7 @@ Semver PresetBundle::get_vendor_profile_version(std::string vendor_name)
     return result_ver;
 }
 
-VendorType PresetBundle::get_current_vendor_type()
+VendorType PresetBundle::get_current_vendor_type(VendorType type)
 {
     auto        t      = VendorType::Unknown;
     auto        config = &printers.get_edited_preset().config;
@@ -338,8 +338,8 @@ VendorType PresetBundle::get_current_vendor_type()
     }
     if (!vendor_name.empty())
     {
-        if(vendor_name.compare("BBL") == 0 || vendor_name.compare("MakerPI") == 0)
-            t = VendorType::Marlin_BBL;
+        if(vendor_name.compare("BBL") == 0)
+            t = type;
     }
     return t;
 }

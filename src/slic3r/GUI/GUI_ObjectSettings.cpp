@@ -389,7 +389,7 @@ void ObjectSettings::update_config_values(ModelConfig* config)
     ConfigManipulation config_manipulation(load_config, toggle_field, nullptr, nullptr, &(config->get()));
 
     config_manipulation.set_is_BBL_Printer(wxGetApp().preset_bundle->is_bbl_vendor());
-
+    config_manipulation.set_is_MakerPI_Printer(wxGetApp().preset_bundle->is_makerpi_vendor());
     if (!is_object_settings)
     {
         const int obj_idx = objects_model->GetObjectIdByItem(item);
