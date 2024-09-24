@@ -745,8 +745,16 @@ void ConfigManipulation::toggle_print_fff_options(DynamicPrintConfig *config, co
         new_conf.set_key_value("overhang_reverse_threshold", new ConfigOptionFloatOrPercent(0,true));
         apply(config, &new_conf);
     }
-    toggle_line("timelapse_type", is_BBL_Printer);
 
+    if(is_MakerPI_Printer)
+    {
+        auto timelapse_type = config->option<ConfigOptionEnum<TimelapseType>>("timelapse_type");
+        config->set_key_value("timelapse_type", new ConfigOptionEnum<TimelapseType>(tlTraditional));
+        toggle_line("timelapse_type", true);
+    } else
+    {
+        toggle_line("timelapse_type", is_BBL_Printer);
+    }
 
     bool have_small_area_infill_flow_compensation = config->opt_bool("small_area_infill_flow_compensation");
     toggle_line("small_area_infill_flow_compensation_model", have_small_area_infill_flow_compensation);
