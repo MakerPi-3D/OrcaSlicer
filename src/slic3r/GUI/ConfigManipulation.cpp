@@ -748,7 +748,7 @@ void ConfigManipulation::toggle_print_fff_options(DynamicPrintConfig *config, co
 
     if(!is_MakerPI_Printer && !is_BBL_Printer)
     {
-        toggle_line("timelapse_type", false);
+        toggle_line("timelapse_type", true);
     } 
 
     bool have_small_area_infill_flow_compensation = config->opt_bool("small_area_infill_flow_compensation");
