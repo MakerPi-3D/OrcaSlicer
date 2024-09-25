@@ -5273,7 +5273,7 @@ std::string GCode::_extrude(const ExtrusionPath &path, std::string description, 
             "move to first " + description + " point",
             sloped == nullptr ? DBL_MAX : get_sloped_z(sloped->slope_begin.z_ratio)
         );
-        if(m_need_change_layer_lift_z && _normal_print_time > 3600) gcode += "\nLOG_Z\n\n";
+        if(m_need_change_layer_lift_z) gcode += "\nLOG_Z\n\n";
         m_need_change_layer_lift_z = false;
     }
 

@@ -807,8 +807,13 @@ void PartPlate::render_logo(bool bottom, bool render_cali)
 		return;
 	}
 
-	m_partplate_list->load_bedtype_textures();
-	m_partplate_list->load_cali_textures();
+	if(wxGetApp().preset_bundle->is_makerpi_vendor())
+	{
+		m_partplate_list->load_cali_textures();
+	} else {
+		m_partplate_list->load_bedtype_textures();
+		m_partplate_list->load_cali_textures();
+	}
 
 	// btDefault should be skipped
 	auto curr_bed_type = get_bed_type();

@@ -24,7 +24,8 @@ enum class VendorType {
     Unknown = 0,
     Klipper,
     Marlin,
-    Marlin_BBL
+    Marlin_BBL,
+    Marlin_MAKERPI
 };
 namespace Slic3r {
 
@@ -89,9 +90,10 @@ public:
     Semver get_vendor_profile_version(std::string vendor_name);
 
     // Orca: get vendor type
-    VendorType get_current_vendor_type();
+    VendorType get_current_vendor_type(VendorType type);
     // Vendor related handy functions
-    bool is_bbl_vendor() { return get_current_vendor_type() == VendorType::Marlin_BBL; }
+    bool is_bbl_vendor() { return get_current_vendor_type(VendorType::Marlin_BBL) == VendorType::Marlin_BBL; }
+    bool is_makerpi_vendor() { return get_current_vendor_type(VendorType::Marlin_MAKERPI) == VendorType::Marlin_MAKERPI; }
     // Whether using bbl network for print upload
     bool use_bbl_network();
     // Whether using bbl's device tab
