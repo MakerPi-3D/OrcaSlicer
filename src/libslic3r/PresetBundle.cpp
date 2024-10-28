@@ -324,7 +324,7 @@ Semver PresetBundle::get_vendor_profile_version(std::string vendor_name)
     return result_ver;
 }
 
-VendorType PresetBundle::get_current_vendor_type(VendorType type)
+VendorType PresetBundle::get_current_vendor_type()
 {
     auto        t      = VendorType::Unknown;
     auto        config = &printers.get_edited_preset().config;
@@ -339,7 +339,9 @@ VendorType PresetBundle::get_current_vendor_type(VendorType type)
     if (!vendor_name.empty())
     {
         if(vendor_name.compare("BBL") == 0)
-            t = type;
+            t = VendorType::Marlin_BBL;
+        else if(vendor_name.compare("MakerPI") == 0)
+            t = VendorType::Marlin_MAKERPI;
     }
     return t;
 }
@@ -349,6 +351,13 @@ bool PresetBundle::use_bbl_network()
     const auto cfg             = printers.get_edited_preset().config;
     const bool use_bbl_network = is_bbl_vendor() && !cfg.opt_bool("bbl_use_printhost");
     return use_bbl_network;
+}
+
+bool PresetBundle::use_makerpi_network()
+{
+    const auto cfg             = printers.get_edited_preset().config;
+    const bool use_makerpi_network = is_makerpi_vendor() && !cfg.opt_bool("makerpi_use_printhost");
+    return use_makerpi_network;
 }
 
 bool PresetBundle::use_bbl_device_tab() {

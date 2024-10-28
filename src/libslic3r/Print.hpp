@@ -958,6 +958,8 @@ public:
     //SoftFever
     bool &is_BBL_printer() { return m_isBBLPrinter; }
     const bool is_BBL_printer() const { return m_isBBLPrinter; }
+    bool &is_MAKERPI_printer() { return m_isMAKERPIPrinter; }
+    const bool is_MAKERPI_printer() const { return m_isMAKERPIPrinter; }
     CalibMode& calib_mode() { return m_calib_params.mode; }
     const CalibMode calib_mode() const { return m_calib_params.mode; }
     void set_calib_params(const Calib_Params& params);
@@ -1015,6 +1017,7 @@ private:
     
     //SoftFever
     bool m_isBBLPrinter;
+    bool m_isMAKERPIPrinter;
 
     // Ordered collections of extrusion paths to build skirt loops and brim.
     ExtrusionEntityCollection               m_skirt;

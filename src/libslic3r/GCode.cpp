@@ -1437,6 +1437,13 @@ bool GCode::is_BBL_Printer()
     return false;
 }
 
+bool GCode::is_MAKERPI_Printer()
+{
+    if (m_curr_print)
+        return m_curr_print->is_MAKERPI_printer();
+    return false;
+}
+
 void GCode::do_export(Print* print, const char* path, GCodeProcessorResult* result, ThumbnailsGeneratorCallback thumbnail_cb)
 {
     PROFILE_CLEAR();
@@ -1990,8 +1997,11 @@ void GCode::_do_export(Print& print, GCodeOutputStream &file, ThumbnailsGenerato
         for (const auto& object : print.objects())
         {
             max_height_z = std::max(object->layers().back()->print_z, max_height_z);
-			max_length_x = std::max((coordf_t)object->size().x(), max_length_x);
-			max_width_y = std::max((coordf_t)object->size().y(), max_width_y);
+            for (PrintInstance &print_instance : object->instances())
+            {
+                max_length_x = std::max(print_instance.get_bounding_box().max.x(), max_length_x);
+                max_width_y = std::max(print_instance.get_bounding_box().max.y(), max_width_y);
+            }
         }
 
         std::ostringstream max_length_x_tip;

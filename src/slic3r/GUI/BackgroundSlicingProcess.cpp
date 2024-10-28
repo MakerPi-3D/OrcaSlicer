@@ -196,6 +196,7 @@ void BackgroundSlicingProcess::process_fff()
 {
     assert(m_print == m_fff_print);
     m_fff_print->is_BBL_printer() = wxGetApp().preset_bundle->is_bbl_vendor();
+    m_fff_print->is_MAKERPI_printer() = wxGetApp().preset_bundle->is_makerpi_vendor();
 	//BBS: add the logic to process from an existed gcode file
 	if (m_print->finished()) {
 		BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << boost::format(" %1%: skip slicing, to process previous gcode file")%__LINE__;
@@ -677,6 +678,7 @@ StringObjectException BackgroundSlicingProcess::validate(StringObjectException *
     assert(m_print == m_fff_print);
 
     m_fff_print->is_BBL_printer() = wxGetApp().preset_bundle->is_bbl_vendor();
+    m_fff_print->is_MAKERPI_printer() = wxGetApp().preset_bundle->is_makerpi_vendor();
     return m_print->validate(warning, collison_polygons, height_polygons);
 }
 

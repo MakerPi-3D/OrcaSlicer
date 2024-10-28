@@ -3556,9 +3556,12 @@ void TabFilament::toggle_options()
     if (!m_active_page)
         return;
     bool is_BBL_printer = false;
+    bool is_MAKERPI_printer = false;
     if (m_preset_bundle) {
       is_BBL_printer =
           wxGetApp().preset_bundle->is_bbl_vendor();
+      is_MAKERPI_printer =
+          wxGetApp().preset_bundle->is_makerpi_vendor();
     }
 
     auto cfg = m_preset_bundle->printers.get_edited_preset().config;
