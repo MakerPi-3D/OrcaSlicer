@@ -3141,6 +3141,8 @@ void GCode::print_machine_envelope(GCodeOutputStream &file, Print &print)
     if ((flavor == gcfMarlinLegacy || flavor == gcfMarlinFirmware || flavor == gcfRepRapFirmware) &&
         print.config().emit_machine_limits_to_gcode.value == true) {
         int factor = flavor == gcfRepRapFirmware ? 60 : 1; // RRF M203 and M566 are in mm/min
+        if(!print.is_MAKERPI_printer())
+        {
         file.write_format("M201 X%d Y%d Z%d E%d\n",
             int(print.config().machine_max_acceleration_x.values.front() + 0.5),
             int(print.config().machine_max_acceleration_y.values.front() + 0.5),
@@ -3151,7 +3153,7 @@ void GCode::print_machine_envelope(GCodeOutputStream &file, Print &print)
             int(print.config().machine_max_speed_y.values.front() * factor + 0.5),
             int(print.config().machine_max_speed_z.values.front() * factor + 0.5),
             int(print.config().machine_max_speed_e.values.front() * factor + 0.5));
-
+        }
         // Now M204 - acceleration. This one is quite hairy thanks to how Marlin guys care about
         // Legacy Marlin should export travel acceleration the same as printing acceleration.
         // MarlinFirmware has the two separated.
@@ -3175,6 +3177,8 @@ void GCode::print_machine_envelope(GCodeOutputStream &file, Print &print)
                 travel_acc);
 
         assert(is_decimal_separator_point());
+        if(!print.is_MAKERPI_printer())
+        {
         file.write_format(flavor == gcfRepRapFirmware
             ? "M566 X%.2lf Y%.2lf Z%.2lf E%.2lf ; sets the jerk limits, mm/min\n"
             : "M205 X%.2lf Y%.2lf Z%.2lf E%.2lf ; sets the jerk limits, mm/sec\n",
@@ -3182,6 +3186,7 @@ void GCode::print_machine_envelope(GCodeOutputStream &file, Print &print)
             print.config().machine_max_jerk_y.values.front() * factor,
             print.config().machine_max_jerk_z.values.front() * factor,
             print.config().machine_max_jerk_e.values.front() * factor);
+        }
     }
 }
 
