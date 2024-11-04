@@ -33,5 +33,24 @@
     ],
     "slow_down_for_layer_cooling": [
         "0"
-    ]
+    ],
+    "additional_cooling_fan_speed": [
+        "100"
+    ],
+    "fan_cooling_layer_time": [
+        "80"
+    ],
+    "fan_min_speed": [
+        "50"
+    ],
+    "nozzle_temperature_range_high": [
+        "240"
+    ],
+    "overhang_fan_threshold": [
+        "0%"
+    ],
+    "pressure_advance": [
+        "0.1"
+    ],
+    "version": "2.2.0.4"
 }
