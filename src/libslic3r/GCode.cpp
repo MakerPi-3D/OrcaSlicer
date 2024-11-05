@@ -5171,8 +5171,10 @@ std::string GCode::_extrude(const ExtrusionPath &path, std::string description, 
             "move to first " + description + " point",
             sloped == nullptr ? DBL_MAX : get_sloped_z(sloped->slope_begin.z_ratio)
         );
-        if(m_need_change_layer_lift_z) gcode += "\nLOG_Z\n\n";
-        m_need_change_layer_lift_z = false;
+        if(m_need_change_layer_lift_z) {
+            gcode += "\nLOG_Z\n\n";
+            m_need_change_layer_lift_z = false;
+		}
     }
 
     // if needed, write the gcode_label_objects_end then gcode_label_objects_start
@@ -6077,7 +6079,10 @@ std::string GCode::travel_to(const Point& point, ExtrusionRole role, std::string
                 const auto& dest2d = this->point_to_gcode(travel.points.back());
                 Vec3d dest3d(dest2d(0), dest2d(1), z == DBL_MAX ? m_nominal_z : z);
                 gcode += m_writer.travel_to_xyz(dest3d, comment, m_need_change_layer_lift_z);
-                m_need_change_layer_lift_z = false;
+                if(m_need_change_layer_lift_z) {
+                    gcode += "\nLOG_Z\n\n";
+                    m_need_change_layer_lift_z = false;
+                }
             } else {
                 // Extra movements emitted by avoid_crossing_perimeters, lift the z to normal height at the beginning, then apply the z
                 // ratio at the last point
@@ -6087,7 +6092,10 @@ std::string GCode::travel_to(const Point& point, ExtrusionRole role, std::string
                         Vec2d dest2d = this->point_to_gcode(travel.points[i]);
                         Vec3d dest3d(dest2d(0), dest2d(1), m_nominal_z);
                         gcode += m_writer.travel_to_xyz(dest3d, comment, m_need_change_layer_lift_z);
-                        m_need_change_layer_lift_z = false;
+                        if(m_need_change_layer_lift_z) {
+                            gcode += "\nLOG_Z\n\n";
+                            m_need_change_layer_lift_z = false;
+                        }
                     } else if (z != DBL_MAX && i == travel.size() - 1) {
                         // Apply z_ratio for the very last point
                         Vec2d dest2d = this->point_to_gcode(travel.points[i]);

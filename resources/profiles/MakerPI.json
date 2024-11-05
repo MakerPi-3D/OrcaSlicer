@@ -22,6 +22,14 @@
             "sub_path": "machine/MakerPI K600.json"
         },
         {
+            "name": "MakerPI K600 复制",
+            "sub_path": "machine/MakerPI K600_copy.json"
+        },
+        {
+            "name": "MakerPI K600 镜像",
+            "sub_path": "machine/MakerPI K600_mirror.json"
+        },
+        {
             "name": "MakerPI F400TP",
             "sub_path": "machine/MakerPI F400TP.json"
         }
@@ -90,6 +98,30 @@
         {
             "name": "0.25mm Draft @MakerPI K600",
             "sub_path": "process/0.25mm Draft @MakerPI K600.json"
+        },
+        {
+            "name": "0.10mm Fine @MakerPI K600_copy",
+            "sub_path": "process/0.10mm Fine @MakerPI K600_copy.json"
+        },
+        {
+            "name": "0.20mm Standard @MakerPI K600_copy",
+            "sub_path": "process/0.20mm Standard @MakerPI K600_copy.json"
+        },
+        {
+            "name": "0.25mm Draft @MakerPI K600_copy",
+            "sub_path": "process/0.25mm Draft @MakerPI K600_copy.json"
+        },
+        {
+            "name": "0.10mm Fine @MakerPI K600_mirror",
+            "sub_path": "process/0.10mm Fine @MakerPI K600_mirror.json"
+        },
+        {
+            "name": "0.20mm Standard @MakerPI K600_mirror",
+            "sub_path": "process/0.20mm Standard @MakerPI K600_mirror.json"
+        },
+        {
+            "name": "0.25mm Draft @MakerPI K600_mirror",
+            "sub_path": "process/0.25mm Draft @MakerPI K600_mirror.json"
         }
     ],
     "filament_list": [
@@ -162,6 +194,14 @@
         {
             "name": "MakerPI K600 0.4 nozzle",
             "sub_path": "machine/MakerPI K600 0.4 nozzle.json"
+        },
+        {
+            "name": "MakerPI K600_copy 0.4 nozzle",
+            "sub_path": "machine/MakerPI K600_copy 0.4 nozzle.json"
+        },
+        {
+            "name": "MakerPI K600_mirror 0.4 nozzle",
+            "sub_path": "machine/MakerPI K600_mirror 0.4 nozzle.json"
         }
     ]
 }
