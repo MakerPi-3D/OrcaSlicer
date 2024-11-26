@@ -9512,11 +9512,13 @@ void Plater::_calib_pa_pattern(const Calib_Params& params)
     const DynamicPrintConfig full_config = wxGetApp().preset_bundle->full_config();
     PresetBundle* preset_bundle = wxGetApp().preset_bundle;
     const bool is_bbl_machine = preset_bundle->is_bbl_vendor();
+    const bool is_makerpi_machine = preset_bundle->is_makerpi_vendor();
     const Vec3d plate_origin = get_partplate_list().get_current_plate_origin();
     CalibPressureAdvancePattern pa_pattern(
         params,
         full_config,
         is_bbl_machine,
+		is_makerpi_machine,
         model(),
         plate_origin
     );
@@ -9555,6 +9557,7 @@ void Plater::_calib_pa_pattern(const Calib_Params& params)
     pa_pattern.generate_custom_gcodes(
         full_config,
         is_bbl_machine,
+		is_makerpi_machine,
         model(),
         plate_origin
     );
@@ -12312,6 +12315,7 @@ void Plater::reslice()
         model().calib_pa_pattern->generate_custom_gcodes(
             wxGetApp().preset_bundle->full_config(),
             preset_bundle->is_bbl_vendor(),
+			preset_bundle->is_makerpi_vendor(),
             model(),
             get_partplate_list().get_current_plate_origin()
         );

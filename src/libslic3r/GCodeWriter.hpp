@@ -114,6 +114,8 @@ public:
     //SoftFever
     void set_is_bbl_machine(bool bval) {m_is_bbl_printers = bval;}
     const bool is_bbl_printers() const {return m_is_bbl_printers;}
+    void set_is_makerpi_machine(bool bval) {m_is_makerpi_printers = bval;}
+    const bool is_makerpi_printers() const {return m_is_makerpi_printers;}
     void set_is_first_layer(bool bval) { m_is_first_layer = bval; }
     GCodeFlavor get_gcode_flavor() const { return config.gcode_flavor; }
 
@@ -164,6 +166,7 @@ public:
 
     //SoftFever
     bool            m_is_bbl_printers = false;
+    bool            m_is_makerpi_printers = false;
     double          m_current_speed;
     bool            m_is_first_layer = true;
 
