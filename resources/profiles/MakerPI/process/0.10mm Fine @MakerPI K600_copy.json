@@ -103,6 +103,6 @@
 	"xy_hole_compensation": "0",
 	"xy_contour_compensation": "0",
 	"compatible_printers": [
-		"MakerPI K600 复制 0.4 nozzle"
+		"MakerPI K600_copy 0.4 nozzle"
 	]
 }

@@ -6080,7 +6080,9 @@ std::string GCode::travel_to(const Point& point, ExtrusionRole role, std::string
                 // No extra movements emitted by avoid_crossing_perimeters, simply move to the end point with z change
                 const auto& dest2d = this->point_to_gcode(travel.points.back());
                 Vec3d dest3d(dest2d(0), dest2d(1), z == DBL_MAX ? m_nominal_z : z);
-                gcode += m_writer.travel_to_xyz(dest3d, comment, m_need_change_layer_lift_z);
+                gcode += m_writer.travel_to_z(dest3d.z(), comment, true);
+                gcode += m_writer.travel_to_xy(dest2d, comment);
+                //gcode += m_writer.travel_to_xyz(dest3d, comment, m_need_change_layer_lift_z);
                 if(m_need_change_layer_lift_z) {
                     gcode += "\nLOG_Z\n\n";
                     m_need_change_layer_lift_z = false;
