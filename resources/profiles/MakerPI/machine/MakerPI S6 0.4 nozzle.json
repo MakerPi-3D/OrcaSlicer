@@ -22,24 +22,13 @@
 	"machine_max_acceleration_travel": [
 		"1500"
 	],
-	"max_layer_height": [
-		"0.4"
-	],
-	"min_layer_height": [
-		"0.1"
-	],
+
 	"printer_settings_id": "MakerPI",
-	"retraction_minimum_travel": [
-		"0.6"
-	],
 	"retract_restart_extra": [
 		"0"
 	],
 	"retract_restart_extra_toolchange": [
 		"0"
-	],
-	"retraction_speed": [
-		"40"
 	],
 	"deretraction_speed": [
 		"0"
@@ -48,7 +37,6 @@
 	"default_filament_profile": [
 		"MakerPI Generic PLA"
 	],
-	"machine_load_filament_time": "25",
 	"machine_max_jerk_e": [
 		"2.5"
 	],
@@ -58,10 +46,6 @@
 	"machine_max_jerk_y": [
 		"9"
 	],
-	"machine_max_jerk_z": [
-		"3"
-	],
-	"machine_unload_filament_time": "29",
 	"scan_first_layer": "0",
 	"upward_compatible_machine": [],
 	"thumbnails_format": "PNG",
@@ -70,7 +54,7 @@
     "bed_mesh_max": "195,190",
     "bed_mesh_min": "0,0",
     "bed_mesh_probe_distance": "40,38",
-    "before_layer_change_gcode": "TIMELAPSE_TAKE_FRAME\n[layer_z]\nG92 E0\n",
+    "before_layer_change_gcode": "; before layer [layer_num] change\n{if layer_z <= initial_layer_print_height + layer_height * 2}\nM140 S{max(bed_temperature_initial_layer_single, bed_temperature_initial_layer_single)}\n{else}\nM140 S{max(bed_temperature[0], bed_temperature[1])}\n{endif}\n{if layer_z == initial_layer_print_height + layer_height * 1 }\n{if(is_extruder_used[0] == true)}M109 T0 S{nozzle_temperature[0]} ; raise extruder one temp{endif}\n{if(is_extruder_used[1] == true)}M109 T1 S{nozzle_temperature[1]} ; raise extruder two temp{endif}\n\n{endif}\n{if (filament_type[0] ==\"PLA\" or filament_type[0] ==\"PETG\")}\n{if layer_z >= initial_layer_print_height + layer_height * 2}\nM106 P2 S150\n{elsif layer_z >= initial_layer_print_height + layer_height * 1}\nM106 P2 S100\n{else}\nM106 P2 S0\n{endif}\n{endif}\nG92 E0\n",
     "enable_filament_ramming": "0",
     "extruder_clearance_height_to_rod": "42.8",
     "extruder_clearance_radius": "81",
@@ -151,6 +135,27 @@
     ],
     "z_hop_types": [
         "Spiral Lift"
+    ],
+    "gcode_flavor": "klipper",
+    "machine_load_filament_time": "0",
+    "machine_max_jerk_z": [
+        "0.2"
+    ],
+    "machine_unload_filament_time": "0",
+    "max_layer_height": [
+        "0.32"
+    ],
+    "min_layer_height": [
+        "0.1"
+    ],
+    "retraction_minimum_travel": [
+        "1"
+    ],
+    "retraction_speed": [
+        "30"
+    ],
+    "z_hop": [
+        "0.4"
     ]
 
 }

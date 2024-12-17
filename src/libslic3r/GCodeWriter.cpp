@@ -321,9 +321,9 @@ std::string GCodeWriter::set_pressure_advance(double pa) const
         //SoftFever: set L1000 to use linear model
         gcode << "M900 K" <<std::setprecision(4)<< pa << " L1000 M10 ; Override pressure advance value\n";
     }
-	else if(m_is_makerpi_printers){
+    else if(m_is_makerpi_printers){
         //SoftFever: set L1000 to use linear model
-        gcode << "SET_PRESSURE_ADVANCE ADVANCE=" <<std::setprecision(4)<< pa << " L1000 M10 ; Override pressure advance value\n";
+        gcode << "SET_PRESSURE_ADVANCE ADVANCE=" <<std::setprecision(4)<< pa << "; Override pressure advance value\n";
     }
     else{
         if (FLAVOR_IS(gcfKlipper))
