@@ -1,0 +1,12 @@
+{
+    "type": "machine_model",
+    "name": "MakerPI P300",
+    "model_id": "MakerPI-P300",
+    "nozzle_diameter": "0.4",
+    "machine_tech": "FFF",
+    "family": "MakerPI",
+    "bed_model": "MakerPI_P300_buildplate_model.stl",
+    "bed_texture": "MakerPI_P300_buildplate_texture2.png",
+    "hotend_model": "",
+	"default_materials": "MakerPI Generic ASA;MakerPI Generic PETG;MakerPI Generic PLA;MakerPI Generic PVA;MakerPI Generic TPU"
+}

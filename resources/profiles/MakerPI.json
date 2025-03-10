@@ -32,6 +32,10 @@
         {
             "name": "MakerPI F400TP",
             "sub_path": "machine/MakerPI F400TP.json"
+        },
+        {
+            "name": "MakerPI P300",
+            "sub_path": "machine/MakerPI P300.json"
         }
     ],
     "process_list": [
@@ -122,6 +126,18 @@
         {
             "name": "0.25mm Draft @MakerPI K600_mirror",
             "sub_path": "process/0.25mm Draft @MakerPI K600_mirror.json"
+        },
+        {
+            "name": "0.10mm Fine @MakerPI P300",
+            "sub_path": "process/0.10mm Fine @MakerPI P300.json"
+        },
+        {
+            "name": "0.20mm Standard @MakerPI P300",
+            "sub_path": "process/0.20mm Standard @MakerPI P300.json"
+        },
+        {
+            "name": "0.25mm Draft @MakerPI P300",
+            "sub_path": "process/0.25mm Draft @MakerPI P300.json"
         }
     ],
     "filament_list": [
@@ -202,6 +218,10 @@
         {
             "name": "MakerPI K600_mirror 0.4 nozzle",
             "sub_path": "machine/MakerPI K600_mirror 0.4 nozzle.json"
+        },
+        {
+            "name": "MakerPI P300 0.4 nozzle",
+            "sub_path": "machine/MakerPI P300 0.4 nozzle.json"
         }
     ]
 }
