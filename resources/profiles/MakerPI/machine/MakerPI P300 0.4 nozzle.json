@@ -54,55 +54,23 @@
     "bed_mesh_max": "195,190",
     "bed_mesh_min": "0,0",
     "bed_mesh_probe_distance": "40,38",
-    "before_layer_change_gcode": "TIMELAPSE_TAKE_FRAME\n; before layer [layer_num] change\n{if layer_z <= initial_layer_print_height + layer_height * 2}\nM140 S{max(bed_temperature_initial_layer_single, bed_temperature_initial_layer_single)}\n{else}\nM140 S{max(bed_temperature[0], bed_temperature[1])}\n{endif}\n{if layer_z == initial_layer_print_height + layer_height * 1 }\n{if(is_extruder_used[0] == true)}M104 T0 S{nozzle_temperature[0]} ; raise extruder one temp{endif}\n{if(is_extruder_used[1] == true)}M104 T1 S{nozzle_temperature[1]} ; raise extruder two temp{endif}\n\n{endif}\n{if (filament_type[0] ==\"PLA\" or filament_type[0] ==\"PETG\")}\n{if layer_z >= initial_layer_print_height + layer_height * 2}\nM106 P2 S150\n{elsif layer_z >= initial_layer_print_height + layer_height * 1}\nM106 P2 S100\n{else}\nM106 P2 S0\n{endif}\n{endif}\nG92 E0\n",
     "enable_filament_ramming": "0",
     "extruder_clearance_height_to_rod": "42.8",
     "extruder_clearance_radius": "81",
 
     "layer_change_gcode": "G92 E0\n; update layer progress\nM73 L{layer_num+1}",
     "machine_end_gcode": "PRINT_END\nM190 S0\nM109 S0\nG91\nG1 E-1 F300\nG1 Z+0.5 E-5 F9000.00\nG90\nG28 X0 Y0\nM84\n\n",
-    "machine_max_acceleration_e": [
-        "10000",
-        "5000"
-    ],
-    "machine_max_acceleration_extruding": [
-        "10000",
-        "20000"
-    ],
-    "machine_max_acceleration_retracting": [
-        "10000",
-        "5000"
-    ],
-    "machine_max_acceleration_x": [
-        "15000",
-        "20000"
-    ],
-    "machine_max_acceleration_y": [
-        "15000",
-        "20000"
-    ],
-    "machine_max_acceleration_z": [
-        "400",
-        "200"
-    ],
+
     "machine_max_speed_e": [
         "35",
         "25"
     ],
-    "machine_max_speed_x": [
-        "400",
-        "200"
-    ],
-    "machine_max_speed_y": [
-        "400",
-        "200"
-    ],
+
     "machine_max_speed_z": [
         "8",
         "12"
     ],
     "machine_pause_gcode": "; pause print\nM2000",
-    "machine_start_gcode": ";===== machine: Makerpi S6 ========================\n;===== date: 20230707 =====================\nG28\n;===== reset machine status =================\nG91\nG1 Z5 F300;\nG90\nM220 S100 ;Reset Feedrate\nM221 S100 ;Reset Flowrate\nM221 X0 Y0 Z0 ; turn off soft endstop to prevent protential logic problem\nM204 S10000 ; init ACC set to 10m/s^2\n\n;===== heatbed preheat ====================\nM140 S[bed_temperature_initial_layer_single] ;set bed temp\nM190 S[bed_temperature_initial_layer_single] ;wait for bed temp\n\n;=============turn on fans to prevent PLA jamming=================\n{if filament_type[initial_extruder]==\"PLA\"}\n    {if (bed_temperature[initial_extruder] >45)||(bed_temperature_initial_layer[initial_extruder] >45)}\n    M106 P3 S180\n    {endif};Prevent PLA from jamming\n{endif}\nM106 P2 S100 ; turn on big fan ,to cool down toolhead\n\n;===== prepare print temperature and material ==========\nM104 S[nozzle_temperature_initial_layer] ;set extruder temp\nG91\nG0 Z10 F1200\nG90\nG28 X\nG1 X210 F12000\nG1 Y0\nG1 Y5 F3000\n\n;=============turn on fans to prevent PLA jamming=================\n{if filament_type[initial_extruder]==\"PLA\"}\n    {if (bed_temperature[initial_extruder] >45)||(bed_temperature_initial_layer[initial_extruder] >45)}\n    M106 P3 S180\n    {endif};Prevent PLA from jamming\n{endif}\nM106 P2 S100 ; turn on big fan ,to cool down toolhead\n\n;===== bed leveling ==================================\nM109 S140\n; Always pass `ADAPTIVE_MARGIN=0` because Orca has already handled `adaptive_bed_mesh_margin` internally\n; Make sure to set ADAPTIVE to 0 otherwise Klipper will use it's own adaptive bed mesh logic\nBED_MESH_CLEAR\nBED_MESH_CALIBRATE mesh_min={adaptive_bed_mesh_min[0]},{adaptive_bed_mesh_min[1]} mesh_max={adaptive_bed_mesh_max[0]},{adaptive_bed_mesh_max[1]} ALGORITHM=[bed_mesh_algo] PROBE_COUNT={bed_mesh_probe_count[0]},{bed_mesh_probe_count[1]} ADAPTIVE=0 ADAPTIVE_MARGIN=0\n;===== bed leveling end ================================\n\n;===== nozzle load line ===============================\nG90\nM83\nG1 X-5 Y1 Z0.8 F18000;Move to start position\nM109 S{nozzle_temperature_initial_layer[initial_extruder]}\nPRINT_START EXTRUDER=[nozzle_temperature_initial_layer] BED=[bed_temperature_initial_layer_single]\nG1 Z0.2\nG0 E2 F300\nG0 Y192 E15 F{outer_wall_volumetric_speed/(0.3*0.5)     * 60}\nG0 X6 E0.700 F{outer_wall_volumetric_speed/(0.3*0.5)/ 4 * 60}\nG0 Y191.5\nG0 E0.2\nG0 X-4.5 E0.700\nG0 Y1 E15 F{outer_wall_volumetric_speed/(0.3*0.5)     * 60}\nM400\n\n;===== for Textured PEI Plate , lower the nozzle as the nozzle was touching topmost of the texture when homing ==\n;curr_bed_type={curr_bed_type}\n{if curr_bed_type==\"Textured PEI Plate\"}\nG29.1 Z{-0.04} ; for Textured PEI Plate\n{endif}\n;========turn off light and wait extrude temperature =============\nM106 S0 ; turn off fan\nM106 P2 S0 ; turn off big fan\nM106 P3 S0 ; turn off chamber fan",
     "nozzle_type": "brass",
     "printable_area": [
         "0x0",
@@ -111,7 +79,6 @@
         "0x300"
     ],
     "printable_height": "300",
-    "printer_structure": "delta",
     "purge_in_prime_tower": "0",
     "retract_before_wipe": [
         "0%"
@@ -130,32 +97,73 @@
     "support_chamber_temp_control": "0",
     "thumbnails": "48x48/PNG, 300x300/PNG",
     "version": "2.2.0.4",
-    "wipe": [
-        "0"
-    ],
+
     "z_hop_types": [
         "Spiral Lift"
     ],
     "gcode_flavor": "klipper",
-    "machine_load_filament_time": "0",
-    "machine_max_jerk_z": [
-        "0.2"
-    ],
     "machine_unload_filament_time": "0",
-    "max_layer_height": [
-        "0.32"
-    ],
+
     "min_layer_height": [
         "0.1"
     ],
+
+
+    "before_layer_change_gcode": "TIMELAPSE_TAKE_FRAME\n[layer_z]\nG92 E0 \n; before layer [layer_num] change\n{if layer_z <= initial_layer_print_height + layer_height * 2}\nM140 S{max(bed_temperature_initial_layer_single, bed_temperature_initial_layer_single)}\n{else}\nM140 S{max(bed_temperature[0], bed_temperature[1])}\n{endif}\n{if layer_z == initial_layer_print_height + layer_height * 1 }\n{if(is_extruder_used[0] == true)}M104 T0 S{nozzle_temperature[0]} ; raise extruder one temp{endif}\n{if(is_extruder_used[1] == true)}M104 T1 S{nozzle_temperature[1]} ; raise extruder two temp{endif}\n\n{endif}\n{if (filament_type[0] ==\"PLA\" or filament_type[0] ==\"PETG\")}\n{if layer_z >= initial_layer_print_height + layer_height * 2}\nM106 P2 S150\n{elsif layer_z >= initial_layer_print_height + layer_height * 1}\nM106 P2 S100\n{else}\nM106 P2 S0\n{endif}\n{endif}\nG92 E0\n\n",
+    "fan_speedup_overhangs": "0",
+
+    "machine_load_filament_time": "25",
+    "machine_max_acceleration_e": [
+        "10000",
+        "5000"
+    ],
+    "machine_max_acceleration_extruding": [
+        "10000",
+        "10000"
+    ],
+    "machine_max_acceleration_retracting": [
+        "10000",
+        "5000"
+    ],
+    "machine_max_acceleration_x": [
+        "10000",
+        "10000"
+    ],
+    "machine_max_acceleration_y": [
+        "10000",
+        "10000"
+    ],
+    "machine_max_acceleration_z": [
+        "400",
+        "400"
+    ],
+    "machine_max_jerk_z": [
+        "3"
+    ],
+    "machine_max_speed_x": [
+        "400",
+        "200"
+    ],
+    "machine_max_speed_y": [
+        "400",
+        "200"
+    ],
+    "max_layer_height": [
+        "0.4"
+    ],
+    "printer_structure": "corexy",
     "retraction_minimum_travel": [
-        "1"
+        "0.6"
     ],
     "retraction_speed": [
-        "30"
+        "40"
+    ],
+    "wipe": [
+        "1"
     ],
     "z_hop": [
-        "0.4"
-    ]
+        "0"
+    ],
+    "machine_start_gcode": ";===== machine: Makerpi P300 ========================\n;===== date: 20230707 =====================\nG28\n;===== reset machine status =================\nG91\nG1 Z5 F300;\nG90\nM220 S100 ;Reset Feedrate\nM221 S100 ;Reset Flowrate\nM221 X0 Y0 Z0 ; turn off soft endstop to prevent protential logic problem\nM204 S10000 ; init ACC set to 10m/s^2\n\n;===== heatbed preheat ====================\nM140 S[bed_temperature_initial_layer_single] ;set bed temp\nM190 S[bed_temperature_initial_layer_single] ;wait for bed temp\n\n;=============turn on fans to prevent PLA jamming=================\n{if filament_type[initial_extruder]==\"PLA\"}\n    {if (bed_temperature[initial_extruder] >45)||(bed_temperature_initial_layer[initial_extruder] >45)}\n    M106 P3 S180\n    {endif};Prevent PLA from jamming\n{endif}\nM106 P2 S100 ; turn on big fan ,to cool down toolhead\n\n;===== prepare print temperature and material ==========\nM104 S[nozzle_temperature_initial_layer] ;set extruder temp\nG91\nG0 Z10 F1200\nG90\nG28 X\nG1 X210 F12000\nG1 Y0\nG1 Y5 F3000\n\n;=============turn on fans to prevent PLA jamming=================\n{if filament_type[initial_extruder]==\"PLA\"}\n    {if (bed_temperature[initial_extruder] >45)||(bed_temperature_initial_layer[initial_extruder] >45)}\n    M106 P3 S180\n    {endif};Prevent PLA from jamming\n{endif}\nM106 P2 S100 ; turn on big fan ,to cool down toolhead\n\n;===== bed leveling ==================================\n;M109 S140\n; Always pass `ADAPTIVE_MARGIN=0` because Orca has already handled `adaptive_bed_mesh_margin` internally\n; Make sure to set ADAPTIVE to 0 otherwise Klipper will use it's own adaptive bed mesh logic\n;BED_MESH_CLEAR\n;BED_MESH_CALIBRATE mesh_min={adaptive_bed_mesh_min[0]},{adaptive_bed_mesh_min[1]} mesh_max={adaptive_bed_mesh_max[0]},{adaptive_bed_mesh_max[1]} ALGORITHM=[bed_mesh_algo] PROBE_COUNT={bed_mesh_probe_count[0]},{bed_mesh_probe_count[1]} ADAPTIVE=0 ADAPTIVE_MARGIN=0\nBED MESH PROFILE LOAD=\"default\"\n;===== bed leveling end ================================\n\n;===== nozzle load line ===============================\nG90\nM83\nG1 X-5 Y1 Z0.8 F18000;Move to start position\nM109 S{nozzle_temperature_initial_layer[initial_extruder]}\nPRINT_START EXTRUDER=[nozzle_temperature_initial_layer] BED=[bed_temperature_initial_layer_single]\nG1 Z0.2\nG0 E2 F300\nG0 Y192 E15 F{outer_wall_volumetric_speed/(0.3*0.5)     * 60}\nG0 X6 E0.700 F{outer_wall_volumetric_speed/(0.3*0.5)/ 4 * 60}\nG0 Y191.5\nG0 E0.2\nG0 X-4.5 E0.700\nG0 Y1 E15 F{outer_wall_volumetric_speed/(0.3*0.5)     * 60}\nM400\n\n;===== for Textured PEI Plate , lower the nozzle as the nozzle was touching topmost of the texture when homing ==\n;curr_bed_type={curr_bed_type}\n{if curr_bed_type==\"Textured PEI Plate\"}\nG29.1 Z{-0.04} ; for Textured PEI Plate\n{endif}\n;========turn off light and wait extrude temperature =============\nM106 S0 ; turn off fan\nM106 P2 S0 ; turn off big fan\nM106 P3 S0 ; turn off chamber fan"
 
 }
