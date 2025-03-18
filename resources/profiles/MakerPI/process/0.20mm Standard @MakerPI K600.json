@@ -9,18 +9,17 @@
 	"bottom_surface_pattern": "monotonic",
 	"bottom_shell_layers": "3",
 	"bottom_shell_thickness": "0",
-	"brim_object_gap": "0.1",
+	"brim_object_gap": "0",
 	"compatible_printers_condition": "",
 	"draft_shield": "disabled",
 
 	"wall_infill_order": "inner wall/outer wall/infill",
 
 	"initial_layer_line_width": "0.5",
-	"ironing_flow": "10%",
-	"ironing_spacing": "0.15",
-	"ironing_speed": "30",
+	"ironing_flow": "5%",
+	"ironing_spacing": "0.1",
+	"ironing_speed": "10",
 	"ironing_type": "no ironing",
-	"layer_height": "0.2",
 	"reduce_infill_retraction": "1",
 	"detect_overhang_wall": "1",
 
@@ -29,7 +28,7 @@
 
 	"skirt_height": "1",
 	"skirt_loops": "0",
-	"minimum_sparse_infill_area": "15",
+	"minimum_sparse_infill_area": "10",
 	"resolution": "0.012",
 	"support_style": "default",
 	"support_top_z_distance": "0.2",
@@ -37,19 +36,20 @@
 	"support_interface_bottom_layers": "2",
 	"support_interface_spacing": "0.5",
 	"support_expansion": "0",
+    "support_base_pattern": "rectilinear",
 	"support_base_pattern_spacing": "2.5",
 	"support_speed": "150",
 
 	"support_object_xy_distance": "0.35",
-	"tree_support_branch_diameter": "2",
-	"tree_support_branch_angle": "45",
+	"tree_support_branch_diameter": "5",
+	"tree_support_branch_angle": "40",
 	"tree_support_wall_count": "0",
-	"top_surface_pattern": "monotonicline",
+	"top_surface_pattern": "monotonic",
 
 
 	"enable_prime_tower": "1",
 	"wipe_tower_no_sparse_layers": "0",
-	"prime_tower_width": "35",
+	"prime_tower_width": "40",
 
 	"enable_prime_tower": "0",
 
@@ -65,8 +65,8 @@
 	"compatible_printers": [
 		"MakerPI K600 0.4 nozzle"
 	],
-    "accel_to_decel_enable": "0",
-    "bridge_speed": "30",
+    "accel_to_decel_enable": "1",
+    "bridge_speed": "40",
     "default_acceleration": "10000",
     "elefant_foot_compensation": "0.15",
 
@@ -75,7 +75,7 @@
 
 
 
-    "infill_wall_overlap": "20%",
+    "infill_wall_overlap": "25%",
 
     "initial_layer_infill_speed": "80",
     "inner_wall_acceleration": "10000",
@@ -84,8 +84,8 @@
 
     "only_one_wall_top": "1",
 
-    "overhang_reverse_internal_only": "1",
-    "overhang_reverse_threshold": "0%",
+    "overhang_reverse_internal_only": "0",
+    "overhang_reverse_threshold": "50%",
 
     "seam_position": "back",
 
@@ -95,7 +95,7 @@
 
 
 
-    "spiral_mode_smooth": "1",
+    "spiral_mode_smooth": "0",
     "top_shell_layers": "3",
     "top_surface_speed": "200",
     "travel_acceleration": "10000",
@@ -105,12 +105,11 @@
 
 
 
-
     "sparse_infill_line_width": "0.45",
     "support_line_width": "0.42",
 
     "top_surface_acceleration": "2000",
-    "top_surface_line_width": "0.42",
+    "top_surface_line_width": "0.45",
     "outer_wall_acceleration": "5000",
     "outer_wall_line_width": "0.42",
     "initial_layer_acceleration": "500",
@@ -118,12 +117,12 @@
     "internal_solid_infill_line_width": "0.42",
     
     "line_width": "0.42",
-    "independent_support_layer_height": "0",
+    "independent_support_layer_height": "1",
     "bridge_acceleration": "50%",
     "bridge_flow": "1",
     "detect_overhang_wall": "1",
 
-    "brim_type": "auto_brim",
+    "brim_type": "outer_only",
 
     "exclude_object": "1",
     "initial_layer_print_height": "0.2",
@@ -135,10 +134,10 @@
     "overhang_3_4_speed": "20",
     "precise_outer_wall": "1",
     "precise_z_height": "1",
-    "reduce_crossing_wall": "1",
+    "reduce_crossing_wall": "0",
     "skirt_loops": "0",
 
-    "small_area_infill_flow_compensation": "1",
+    "small_area_infill_flow_compensation": "0",
 
 
     "top_shell_thickness": "0.8",
@@ -147,7 +146,7 @@
 
 
 
-    "counterbore_hole_bridging": "partiallybridge",
+    "counterbore_hole_bridging": "sacrificiallayer",
     "detect_thin_wall": "0",
     "enable_arc_fitting": "0",
     "flush_into_infill": "1",
@@ -163,9 +162,9 @@
     "seam_slope_inner_walls": "1",
     "seam_slope_type": "all",
     "slow_down_layers": "1",
-    "slowdown_for_curled_perimeters": "1",
-    "sparse_infill_density": "10%",
-    "sparse_infill_pattern": "alignedrectilinear",
+    "slowdown_for_curled_perimeters": "0",
+    "sparse_infill_density": "15%",
+    "sparse_infill_pattern": "grid",
     "sparse_infill_speed": "230",
     "support_remove_small_overhang": "1",
     "support_threshold_angle": "22",
@@ -173,5 +172,10 @@
     "thick_bridges": "0",
     "wall_loops": "2",
     "wall_sequence": "inner wall/outer wall",
-    "wipe_on_loops": "0"
+    "wipe_on_loops": "0",
+
+    "enable_support": "1",
+	"standby_temperature_delta": "-20",
+	"skirt_distance": "3"
+
 }

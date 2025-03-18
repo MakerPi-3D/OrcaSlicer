@@ -51,7 +51,6 @@
 	"scan_first_layer": "0",
 	"upward_compatible_machine": [],
 	"thumbnails_format": "PNG",
-	"layer_change_gcode": "G92 E0\n; update layer progress\nM73 L{layer_num+1}\n",
     "adaptive_bed_mesh_margin": "20",
 
     "bed_mesh_min": "0,0",
