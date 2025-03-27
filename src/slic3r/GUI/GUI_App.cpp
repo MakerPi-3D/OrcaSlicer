@@ -1108,22 +1108,22 @@ std::string GUI_App::get_http_url(std::string country_code, std::string path)
 {
     std::string url;
     if (country_code == "US") {
-        url = "https://api.bambulab.com/";
+        url = "https://www.makerpi3d.com/api/";
     }
     else if (country_code == "CN") {
-        url = "https://api.bambulab.cn/";
+        url = "https://www.makerpi3d.com/api/";
     }
     else if (country_code == "ENV_CN_DEV") {
-        url = "https://api-dev.bambu-lab.com/";
+        url = "https://www.makerpi3d.com/api/";
     }
     else if (country_code == "ENV_CN_QA") {
-        url = "https://api-qa.bambu-lab.com/";
+        url = "https://www.makerpi3d.com/api/";
     }
     else if (country_code == "ENV_CN_PRE") {
-        url = "https://api-pre.bambu-lab.com/";
+        url = "https://www.makerpi3d.com/api/";
     }
     else {
-        url = "https://api.bambulab.com/";
+        url = "https://www.makerpi3d.com/api/";
     }
 
     url += path.empty() ? "v1/iot-service/api/slicer/resource" : path;
@@ -1458,7 +1458,7 @@ int GUI_App::install_plugin(std::string name, std::string package_name, InstallP
     if (pro_fn)
         pro_fn(InstallStatusInstallCompleted, 100, cancel);
     if (name == "plugins")
-        app_config->set_bool("installed_networking", true);
+        app_config->set_bool("installed_networking", false);
     BOOST_LOG_TRIVIAL(info) << "[install_plugin] success";
     return 0;
 }

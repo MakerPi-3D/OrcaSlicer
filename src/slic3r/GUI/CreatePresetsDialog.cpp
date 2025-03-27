@@ -67,7 +67,7 @@ static const std::vector<std::string> filament_types = {"PLA",    "rPLA",  "PLA+
 static const std::vector<std::string> printer_vendors = 
     {"Anker",              "Anycubic",           "Artillery",          "Bambulab",           "BIQU",
      "Comgrow",            "Creality",           "Custom Printer",     "Elegoo",             "Flashforge",
-     "FLSun",              "FlyingBear",         "Folgertech",         "InfiMech",           "Kingroon",
+     "FLSun",              "FlyingBear",         "Folgertech",         "InfiMech",           "Kingroon",           "MakerPI",
      "Orca Arena Printer", "Peopoly",            "Prusa",              "Qidi",               "Raise3D",
      "RatRig",             "SecKit",             "Snapmaker",          "Sovol",              "Tronxy",
      "TwoTrees",           "UltiMaker",          "Vivedino",           "Voron",              "Voxelab",
@@ -101,6 +101,8 @@ static const std::unordered_map<std::string, std::vector<std::string>> printer_m
      {"LulzBot",        {"Mini Aero",       "Taz6 Aero"}},
      {"MakerGear",      {"Micro",           "M2(V4 Hotend)",    "M2 Dual",          "M3-single Extruder", "M3-Independent Dual Rev.0", "M3-Independent Dual Rev.0(Duplication Mode)",
                         "M3-Independent Dual Rev.1",            "M3-Independent Dual Rev.1(Duplication Mode)", "ultra One", "Ultra One (DuplicationMode)"}},
+     {"MakerPI",        {"MakerPI S6",       "MakerPI P300",       "MakerPI K400",       "MakerPI K400 复制",       "MakerPI K400 镜像",       "MakerPI K600",       "MakerPI K600 复制",
+                         "MakerPI K600 镜像",       "MakerPI F400TP",       "MakerPI P2 Pro"}},
      {"Original Prusa", {"MK4", "SL1S SPEED", "MMU3"}},
      {"Papapiu",        {"N1s"}},
      {"Print4Taste",    {"mycusini 2.0"}},
